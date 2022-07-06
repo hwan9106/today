@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean name="addr1" class="kr.human.di.vo.AddressVO">
+		<constructor-arg value="수원시"/>
+		<constructor-arg value="팔달구"/>
+		<constructor-arg value="조선 민주주의 인민 공화국"/>	
+	</bean>
+	
+	<bean name="addr2" class="kr.human.di.vo.AddressVO">
+		<constructor-arg value="조선 민주주의 인민 공화국"/>	
+		<constructor-arg value="수원시"/>
+		<constructor-arg value="팔달구"/>
+	</bean>
+	<!-- 생성자 인수를 차례대로 안쓸경우 index로 순서를 지정해줘야 한다. -->
+	<bean name="addr3" class="kr.human.di.vo.AddressVO">
+		<constructor-arg value="조선 민주주의 인민 공화국" index="2"/>	
+		<constructor-arg value="수원시" index="0"/>
+		<constructor-arg value="팔달구"/>
+	</bean>
+</beans>

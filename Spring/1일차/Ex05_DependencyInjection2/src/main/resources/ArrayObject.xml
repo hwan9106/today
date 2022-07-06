@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 배열에 주입하기 -->
+	<!-- 1.생정자를 통한 주입 -->
+	<bean id = "arrayObject1" class="kr.human.di.vo.ArrayObject">
+		<constructor-arg>
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+				<value>4</value>
+				<value>5</value>
+			</array>		
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<value>한사람</value>
+				<value>두사람</value>
+				<value>세사람</value>
+			</array>
+		</constructor-arg>
+	</bean>
+	<!-- 2. Setter를 통한 주입 -->
+	<bean name = "arrayObject2" class ="kr.human.di.vo.ArrayObject">
+		<property name="ids">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</array>
+		</property>
+		<property name="names">
+			<array>
+				<value>한사람</value>
+				<value>두사람</value>			
+			</array>
+		</property>
+	</bean>
+</beans>

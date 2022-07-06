@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 날짜 객체 등록 -->
+	<bean name="date" class="java.util.Date">
+		<constructor-arg value="01/02/2022"/>
+	</bean>
+	
+	<!-- Answer객체 등록 -->
+	<bean name="answer1" class="kr.human.di.vo.AnswerVO">
+		<constructor-arg value="1"/>
+		<constructor-arg value="자바"/>
+		<constructor-arg value="11/02/2022"/>
+	</bean>
+	<bean name="answer2" class="kr.human.di.vo.AnswerVO">
+		<property name="answer" value="HTML"/>
+		<property name="postedDate" ref="date"/>
+		<property name="id" value="2"/>
+	</bean>
+	
+	<!-- UserVO객체 등록 -->
+	<bean name="user1" class="kr.human.di.vo.UserVO">
+		<constructor-arg value="1"/>
+		<constructor-arg value="한사람"/>
+		<constructor-arg value="hansaram@gmail.com"/>
+	</bean>
+	<bean name="user2" class="kr.human.di.vo.UserVO">
+		<constructor-arg value="hansaram@gmail.com" index="2"/>
+		<constructor-arg value="1" type="int"/>
+		<constructor-arg value="한사람" type="java.lang.String"/>
+	</bean>
+	
+	<bean name="map" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key-ref="answer1" value-ref="user1"/>
+				<entry key-ref="answer2" value-ref="user2"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<!-- QuestionVO 객체 등록  -->
+	<bean name="question1" class="kr.human.di.vo.QuestionVO">
+		<constructor-arg value="1"/>
+		<constructor-arg value="한사람"/>
+		<constructor-arg>
+			<map>
+				<entry key-ref="answer1" value-ref="user1"/>
+				<entry key-ref="answer2" value-ref="user2"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean name="question2" class="kr.human.di.vo.QuestionVO">
+		<constructor-arg value="2"/>
+		<constructor-arg value="두사람"/>
+		<constructor-arg ref="map"/>
+	</bean>
+</beans>

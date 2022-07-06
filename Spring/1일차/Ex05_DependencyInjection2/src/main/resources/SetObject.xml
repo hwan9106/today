@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- Set에 주입하기 -->
+	<bean id = "setObj1" class="kr.human.di.vo.SetObject">
+		<constructor-arg>
+			<set>
+				<value>한사람</value>
+				<value>두사람</value>
+				<value>세사람</value>
+				<value>한사람</value>
+			</set>
+		</constructor-arg>
+	</bean>
+	
+	<bean id = "setObj2" class="kr.human.di.vo.SetObject">
+		<property name="nameSet">
+			<set>
+				<value>한사람</value>
+				<value>세사람</value>
+			</set>
+		</property>>
+	</bean>
+</beans>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 1. 기본 생성자를 이용한 객체 등록 -->
+	<bean name="emp1" class="kr.human.di.vo.EmpVO"/>
+	<!-- 2. 인수가 두개인 생성자를 이용한 객체 등록 -->
+	<bean name="emp2" class="kr.human.di.vo.EmpVO">
+		<constructor-arg>
+			<value>1001</value>		
+		</constructor-arg>	
+		<constructor-arg value="한사람"/>
+	</bean>
+	<!-- 유일한 타입을 지정하면 순서에 상관없이 작동된다.  -->
+	<bean name="emp3" class="kr.human.di.vo.EmpVO">
+		<constructor-arg value="한사람" type="java.lang.String"/>
+		<constructor-arg type="int">
+			<value>1001</value>		
+		</constructor-arg>	
+	</bean>
+	
+	<!-- 타입을 지정하지 않고 순서를 지정해서 주입이 가능 -->
+	<bean name="emp4" class="kr.human.di.vo.EmpVO">
+		<constructor-arg value="한사람" index="1"/>
+		<constructor-arg value="1002" index="0"/>
+	</bean>
+	
+	<!-- 타입과  순서를 지정해서 주입이 가능 -->
+	<bean name="emp5" class="kr.human.di.vo.EmpVO">
+		<constructor-arg value="한사람" index="1" type="java.lang.String"/>
+		<constructor-arg value="1002" index="0" type="int"/>
+	</bean>
+	<!-- 3. Setter를 통한 주입 -->
+	<bean name="emp6" class="kr.human.di.vo.EmpVO">
+		<property name="id">
+			<value>1003</value>
+		</property>
+		<property name="name" value="두사람"></property>
+	</bean>
+	<bean name="emp7" class="kr.human.di.vo.EmpVO">
+		<property name="name" value="두사람"></property>
+		<property name="id">
+			<value>1004</value>
+		</property>
+	</bean>
+	<!-- 4. 생성자와 Setter를 섞어서 주입 가능 -->
+	<bean name="emp8" class="kr.human.di.vo.EmpVO">
+		<constructor-arg value="세사람"/>
+		<property name="id" value = "1000005"/>
+	</bean>
+	<bean name="emp9" class="kr.human.di.vo.EmpVO">
+		<property name="id" value = "1000005"/>
+		<constructor-arg value="세사람"/>
+	</bean>
+	<bean name="emp10" class="kr.human.di.vo.EmpVO">
+		<property name="name" value = "열사라암."/>
+		<constructor-arg value="1008" type="int"/>
+	</bean>
+</beans>

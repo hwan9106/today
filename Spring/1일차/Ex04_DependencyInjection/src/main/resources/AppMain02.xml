@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 의존성이 없는 객체 등록 -->
+	<bean name = "messaging" class="kr.human.di.vo.ActiveMQMessaging"/>
+	<bean name = "encryption" class ="kr.human.di.vo.RSAEncryption"/>
+	
+	<!-- 의존성이 있는 객체 -->
+	<bean name="communication" class="kr.human.di.vo.Communication">
+		<!-- 생성자를 통한 주입 -->
+		<constructor-arg ref="encryption" />
+		<!-- Setter를 통한 주입 -->
+		<property name="messaging" ref="messaging"></property>
+	</bean>
+	
+	<bean name="communication2" class="kr.human.di.vo.Communication">
+		<!-- 생성자를 통한 주입 -->
+		<constructor-arg ref="encryption" />
+		<constructor-arg ref="messaging" />
+	</bean>
+	
+	
+	<bean name="communication3" class="kr.human.di.vo.Communication">
+		<!-- Setter를 통한 주입 -->
+		<property name="messaging" ref="messaging"></property>
+		<property name="encryption" ref="encryption"></property>
+	</bean>
+
+</beans>

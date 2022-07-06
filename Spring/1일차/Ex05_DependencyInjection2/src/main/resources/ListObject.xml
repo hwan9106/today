@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 1.생성자를 통한 주입 -->
+	<bean name="listObj1" class="kr.human.di.vo.ListObject">
+		<constructor-arg>
+			<list>
+				<value>한놈</value>
+				<value>두식이</value>
+				<value>석삼</value>
+				<value>두식이</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	<!-- 2.Setter를 통한 주입 -->
+	<bean name="listObj2" class="kr.human.di.vo.ListObject">
+		<property name="list">
+			<list>
+				<value>한놈</value>
+				<value>두식이</value>
+				<value>석삼</value>
+				<value>두식이</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 3.참조를 통한 주입 -->
+	<bean name ="nameList" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<value>한놈</value>
+				<value>두식이</value>
+				<value>석삼</value>
+				<value>두식이</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean name="listObj3" class="kr.human.di.vo.ListObject">
+		<property name="list" ref="nameList"/>
+	</bean>
+</beans>

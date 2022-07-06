@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!--1. 생성자 를 통한 주입하기 -->
+	<bean name="mapObj1" class="kr.human.di.vo.MapObject">
+		<constructor-arg>
+			<map>
+				<entry key = "computer" value="1254480"/>
+				<entry key = "mouse" value="100000"/>
+				<entry key = "keyboard" value="50000"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	<!--2. Setter 를 통한 주입하기 -->
+	<bean name="mapObj2" class="kr.human.di.vo.MapObject">
+		<property name="map">
+			<map>
+				<entry key = "computer" value="1254480"/>
+				<entry key = "mouse" value="100000"/>
+				<entry key = "keyboard" value="50000"/>
+			</map>
+		</property>
+	</bean>
+	<!--3. 참조 를 통한 주입하기 -->
+	<bean name="map" class="java.util.TreeMap">
+		<constructor-arg>
+			<map>
+				<entry key = "computer" value="1254480"/>
+				<entry key = "mouse" value="100000"/>
+				<entry key = "keyboard" value="50000"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean name="mapObj3" class="kr.human.di.vo.MapObject">
+		<property name="map" ref="map"/>
+	</bean>
+	
+	
+</beans>
