@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<bean name="instrument1" class="kr.human.di.vo.Instrument">
+		<property name="name" value="한사람"></property>
+	</bean>
+	
+	<bean name="performer1" class="kr.human.di.vo.Performer">
+		<property name="instrument" ref="instrument1"/>
+	</bean>
+	<!-- autowire="constructor : 같은 타입의 변수를 받는 생성자가 존재하면 자동으로 주입해라  -->
+	<bean name="performer2" class="kr.human.di.vo.Performer" autowire="constructor"/>
+</beans>

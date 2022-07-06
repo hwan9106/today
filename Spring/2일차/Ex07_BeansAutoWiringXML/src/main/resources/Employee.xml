@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean name ="address" class="kr.human.di.vo.EmployeeAddress">
+		<constructor-arg value="팔달로" name="street"/>
+		<constructor-arg value="수원시" name="city"/>
+	</bean>
+	<!-- 동일한 타입의 객체가 여러개 존재하면 에러다~!!! -->
+	<!--
+	<bean name ="address2" class="kr.human.di.vo.EmployeeAddress">
+		<constructor-arg value="한터로" name="street"/>
+		<constructor-arg value="용인시" name="city"/>
+	</bean>
+	 -->
+	<bean name="emp1" class="kr.human.di.vo.Employee">
+		<property name="employeeAddress" ref = "address"/>
+	</bean>
+	<!-- autowire:"byType" : 주입해야할 객체의 타입이 같으면 자동으로 주입해라~!! -->
+	<bean name="emp2" class="kr.human.di.vo.Employee" autowire="byType"/>
+</beans>

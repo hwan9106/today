@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean name="license" class="kr.human.di.vo.License">
+		<property name="number" value="경기 22-001010"/>
+	</bean>
+	
+	<bean name="driver1" class="kr.human.di.vo.Driver">
+		<property name="license" ref="license"/>
+	</bean>
+	<!-- autowire="no" : 자동으로 주입하지 말아라!! -->
+	<bean name="driver2" class="kr.human.di.vo.Driver" autowire="no"/>
+</beans>

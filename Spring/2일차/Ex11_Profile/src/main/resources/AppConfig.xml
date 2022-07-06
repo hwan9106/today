@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	<!-- 	
+	<context:component-scan base-package="kr.human.di"></context:component-scan> 
+	-->
+	<!-- 프로파일을 사용하겠다. -->
+	<!-- 1.PropertySourcesPlaceholderConfigurer 객체사용 
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+          <list>
+            <value>classpath:properties/application.properties</value>
+            <value>classpath:properties/jdbc.properties</value>
+          </list>
+        </property>
+      </bean>
+      -->
+      <!-- 2. util네임스페이스를 사용 하는 방법 -->
+      <!-- 
+      <util:properties id="config" location="classpath:properties/application.properties"></util:properties>
+      <util:properties id="db" location="classpath:properties/jdbc.properties"></util:properties>
+      
+	   <bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	      <property name="driverClassName" value="#{db['m.driver']}"></property>
+	      <property name="url" value="#{db['m.url']}"></property>
+	      <property name="username"  value="#{db['m.username']}"></property>
+	      <property name="password" value="#{db['m.password']}"></property>
+	   </bean>
+	   -->
+      <!-- 3. context네임스페이스를 사용하는 방법 -->
+      <context:property-placeholder location="classpath:properties/*"/>
+      <!-- DB연결 -->
+	   <bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	      <property name="driverClassName" value="${o.driver}"></property>
+	      <property name="url" value="${o.url}"></property>
+	      <property name="username"  value="${o.username}"></property>
+	      <property name="password" value="${o.password}"></property>
+	   </bean>
+	
+      
+      <beans profile="Development">
+        <import resource="dev-config-context.xml"/>
+      </beans>
+
+      <beans profile="Production">
+        <import resource="prod-config-context.xml"/>
+      </beans>
+      
+      
+
+</beans>
