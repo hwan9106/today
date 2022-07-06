@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="test">
+	<select id="today" resultClass="string">
+		<![CDATA[
+			select now()
+		]]>
+	</select>
+	<select id="sum" parameterClass="hashMap" resultClass="int" >
+		<![CDATA[
+			select #num1# + #num2#
+		]]>
+	</select>
+	<select id="mul" parameterClass="hashMap" resultClass="int">
+		<![CDATA[
+			select #num1# * #num2#
+		]]>
+	</select>
+	
+	<select id="vo" parameterClass="testVO" resultClass="testVO">
+		<![CDATA[
+			select now() as today, #num1# + #num2# as sum, #num1# * #num2# as mul, #num1# num1, #num2# num2 
+		]]>
+	</select>
+</sqlMap>

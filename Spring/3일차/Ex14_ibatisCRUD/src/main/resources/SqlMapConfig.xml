@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<!-- 루트 태그는 sqlMapConfig이다. -->
+<sqlMapConfig>
+	<!-- DB 연결 방법 구성 -->
+	<settings 
+		cacheModelsEnabled="true" 
+		enhancementEnabled="true"
+		lazyLoadingEnabled="true" 
+		maxRequests="80" 
+		maxSessions="100"
+		maxTransactions="50" 
+		useStatementNamespaces="true" />
+	<!-- 클래스이름 단축 지정 -->
+	<typeAlias alias="hashMap" type="java.util.HashMap" />
+	<typeAlias alias="testVO" type="kr.human.di.vo.TestVO" />
+	<typeAlias alias="peopleVO" type="kr.human.di.vo.PeopleVO" />
+	<!-- SQL명령어가 저장되어있는 XML파일 위치 지정 복수개 가능 -->
+	<sqlMap resource="testMapper.xml" />	
+	<sqlMap resource="peopleMapper.xml" />	
+</sqlMapConfig>

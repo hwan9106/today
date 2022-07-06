@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="people">
+	<!-- 1. 1개얻기 -->
+	<select id="selectByIdx" parameterClass="int" resultClass="peopleVO">
+		<![CDATA[
+		select * from people where idx= #idx#
+		]]>
+	</select>
+	<!-- 2. 모두얻기 -->
+	<select id="selectList" resultClass="peopleVO">
+		<![CDATA[
+		select * from people order by idx desc
+		]]>
+	</select>
+	<!-- 3. 저장하기 -->
+	<insert id="insert" parameterClass="peopleVO">
+		<![CDATA[
+		insert into people
+		(name, age)
+		values
+		(#name#,#age#)
+		]]>
+	</insert>
+	<!-- 4. 수정하기 -->
+	<update id="update" parameterClass="peopleVO">
+		<![CDATA[
+		update people set name=#name#, age=#age# where idx=#idx#
+		]]>
+	</update>
+	<!-- 5. 삭제하기 -->
+	<delete id="delete" parameterClass="int">
+		<![CDATA[
+		delete from people where idx=#idx#
+		]]>
+	</delete>	
+</sqlMap>
+

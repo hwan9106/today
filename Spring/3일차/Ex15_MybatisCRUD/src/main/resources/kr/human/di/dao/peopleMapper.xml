@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.di.dao.PeopleDAO">
+	<!-- namespace를 인터페이스 이름과 일치 시켜야 한다. -->
+	<select id="selectByIdx" parameterType="int" resultType="peopleVO">
+		<![CDATA[
+			select*from people where idx =#{idx}
+		]]>
+	</select>
+	<select id="selectList" resultType="peopleVO">
+		<![CDATA[
+			select*from people order by idx desc
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="peopleVO">
+		<![CDATA[
+		insert into people(name, age) valuse(#{name},#{age})
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="peopleVO">
+		<![CDATA[
+		update set name=#{name}, age=#{age} where idx=#{idx} 
+		]]>
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+		delete from people where idx=#{idx}
+		]]>
+	</delete>
+	
+</mapper>

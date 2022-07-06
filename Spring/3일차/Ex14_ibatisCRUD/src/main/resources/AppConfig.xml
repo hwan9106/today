@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!-- bean을 등록할 패키지 지정 -->
+	<context:component-scan base-package="kr.human.di"/>
+	<!-- 프로퍼티 파일 사용하겠다. -->
+	<context:property-placeholder location ="classpath:jdbc.properties"/>
+	
+	<!-- DB연결 -->
+	<!-- Maria DB연결 -->
+	<bean id="dataSoruce" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${m.driver}"/>
+		<property name="url" value="${m.url}"/>
+		<property name="username" value="${m.username}"/>
+		<property name="password" value="${m.password}"/>
+	</bean>
+	<!-- Oracle DB연결 -->
+	<!-- 
+	<bean id="dataSoruce" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${o.driver}"/>
+		<property name="url" value="${o.url}"/>
+		<property name="username" value="${o.username}"/>
+		<property name="password" value="${o.password}"/>
+	</bean>
+	 -->
+	 
+	 <!-- JDBCTemplate 등록 -->
+	 <!-- 
+	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		 <property name="dataSource" ref="dataSource"/>	  
+	 </bean>
+	  -->
+	 <!-- ibatis 등록 -->
+	 <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+	 	<property name="dataSource" ref="dataSoruce"/>
+	 	<property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+	 </bean>
+</beans>
