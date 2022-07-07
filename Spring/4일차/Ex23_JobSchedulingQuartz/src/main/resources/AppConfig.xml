@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 자동으로 Annotation붙은 빈을 등록한다. -->
+	<context:component-scan
+		base-package="kr.human.job" />
+
+	<!-- 수동으로 빈등록 -->
+	<!-- <bean id="myBean" class="kr.human.job.app.MyBean"/> <bean id="anotherBean" 
+		class="kr.human.job.app.AnotherBean"/> -->
+
+	<!-- 작업을 등록한다. -->
+	<!-- myBean객체의 printMessage를 등록 -->
+	<bean id="simpleJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myBean" />
+		<property name="targetMethod" value="printMessage" />
+	</bean>
+
+	<!--ScheduledJob 의 anotherBean변수를 등록 -->
+	<bean name="complexJobDetail"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="kr.human.job.app.ScheduledJob" />
+		<property name="jobDataMap">
+			<map>
+				<entry key="anotherBean" value-ref="anotherBean" />
+			</map>
+		</property>
+		<property name="durability" value="true" />
+	</bean>
+	
+	
+	<!-- 작업 실행기 등록 -->
+	<!-- simpleJobDetail 실행기 -->
+	<bean id="simpleTrigger"  class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+	    <property name="jobDetail" ref="simpleJobDetail" />
+	    <property name="startDelay" value="1000" />
+	    <property name="repeatInterval" value="2000" />
+	</bean>
+	<!-- 클론식으로 complexJobDetail 실행기 -->
+	<!-- Run the job every 5 seconds only on Weekends -->
+	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="complexJobDetail" />
+	    <property name="cronExpression" value="0/5 * * ? * SAT-SUN" />
+	</bean>
+	
+	<!-- 작업 실행!!!! -->
+	<bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 작업 내용 지정 -->
+	    <property name="jobDetails">
+	        <list>
+	            <ref bean="simpleJobDetail" />
+	            <ref bean="complexJobDetail" />
+	        </list>
+	    </property>
+	 	<!-- 작업 실행기 지정 -->
+	    <property name="triggers">
+	        <list>
+	            <ref bean="simpleTrigger" />
+	            <ref bean="cronTrigger" />
+	        </list>
+	    </property>
+	</bean>	
+	
+</beans>
+
+
+

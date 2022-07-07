@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 빈을 등록할 패키지 지정 -->
+	<context:component-scan
+		base-package="kr.human.job" />
+	<context:component-scan base-package="com.websystique.spring.scheduling" />
+ 	<!-- 스케줄 등록 -->
+    <task:scheduled-tasks scheduler="myScheduler">
+    	<!-- mybean 클래스의 printMessage메서드를 5초마다 반복 실행 해라 -->
+        <task:scheduled ref="myBean" method="printMessage" fixed-delay="5000" />
+        <!-- mybean 클래스의 printMessage2메서드를 3초후 실행 하고 2초마다 반복된다. -->
+        <task:scheduled ref="myBean" method="printMessage2" fixed-delay="2000" initial-delay="3000"/>
+        <!-- mybean 클래스의 printMessage3메서드를 클론식을 이용한 작업 지정-->
+        <!-- https://zamezzz.tistory.com/197 표현식 참조 -->
+        <!-- 초 분 시 일 월 요일 년도 -->
+        <!-- 월요일~금요일까지 매 2초마다 실행 -->
+        <task:scheduled ref="myBean" method="printMessage3" cron="*/2 * * * * MON-FRI"/>
+    </task:scheduled-tasks>
+ 	<!-- 스케줄 실행 -->
+    <task:scheduler id="myScheduler"/>
+</beans>
