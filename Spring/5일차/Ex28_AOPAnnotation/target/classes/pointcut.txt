@@ -1,0 +1,58 @@
+● execution 명시자 : Advice를 적용할 메서드를 명시할 때 사용
+ 기본 형식
+ execution(수식어패턴 리턴타입패턴 클래스이름패턴.이름패턴(파라미터패턴)
+  ▶ 수식어패턴 : public, private 등등의 수식어를 명시, 생략 가능
+  ▶ 리턴타입 : 리턴 타입을 명시
+  ▶ 클래스이름, 이름패턴 : 클래스 이름 및 메서드이름을 패턴으로 명시
+  ▶ 파라미터패턴 : 매칭될 파라미터에 대해 명시
+  ▶ '*' : 모든 값을 표현
+  ▶ '..' : 0개 이상을 의미
+
+ 
+
+ex)
+
+▨ execution(public void set*(..))
+  => 리턴 타입이 void이고 메서드 이름이 set으로 시작하며, 파라미터가 0개 이상인 메서드
+
+▨ execution(* sp.aop.service.*.*())
+  => sp.aop.service 패키지의 파라미터가 없는 모든 메서드
+
+▨ execution(* sp.aop.service..*.*(..))
+  => sp.aop.service 패키지 및 하위 패키지에 있는 파라미터가 0개 이상인 모든 메서드
+
+▨ execution(* get*(*))
+  => get으로 시작하고 1개의 파라미터를 갖는 메서드
+
+▨ execution(Integer read*(Integer, ..))
+  => 리턴 값이 Integer이고 메서드 이름이 read로 시작하며 첫번째 파라미터 타입이 Integer이고, 1개 이상의 파라미터를 갖는 메서드
+
+ 
+
+ 
+
+ 
+
+● within 명시자 : 메서드가 아닌 특정 타입에 속하는 메서드를 Pointcut으로 설정할 때 사용
+
+ 
+
+ex
+
+▨ within(sp.aop.service.*)
+
+  => sp.aop.service 패키지에 있는 모든 메서드
+
+▨ within(sp.aop.service..*)
+
+  => sp.aop.service 패키지 및 하위 패키지에 있는 모든 메서드
+
+● bean 명시자 : 스프링 빈 이름을 이용하여 Pointcut을 정의
+ex
+▨ bean(faqBoard)
+
+  => 이름이 faqBoard인 빈의 메서드 호출
+
+▨ bean(*noticeBoard)
+
+  => 이름이 noticeBoard로 끝나는 빈의 메서드 호출
