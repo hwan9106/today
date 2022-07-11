@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>스프링 부트 웹 서비스</title>
+</head>
+<body>
+    <h1>스프링 부트로 시작하는 웹 서비스</h1>
+    <h2> {{name}}님 반갑습니다.</h2>
+    {{#gender}}
+    남자
+    {{/gender}}
+    {{^gender}}
+    여자
+    {{/gender}}
+    <hr />
+    <h2>취미</h2>
+    <ol>
+    	{{#hobby}}
+    	<li>{{.}}</li>
+    	{{/hobby}}
+    </ol>
+    <hr />
+    {{#list}}
+    {{name}}({{age}}세, {{#gender}}남자{{/gender}}{{^gender}}여자{{/gender}}) <br />
+    {{/list}}
+</body>
+
+</html>

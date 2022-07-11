@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Good Thymes!!</title>
+</head>
+<body>
+	<h1>Hello Thymeleaf!!!(태그의 적용여부 th:text, th:utext )</h1>
+	<h2>변수의 사용</h2>
+	<hr />
+	<p> 반갑습니다. <span th:text="${session.vo.name}"></span>님!!!!</p>
+	<span th:text="${session.vo.name}"/>
+	(<span th:text="${session.vo.age}"/>세, <span th:text="*{session.vo.gender?'남':'여'}"/> )
+	<br />
+	<span th:text="${session.vo.hobby}"/>  <br />
+	<span th:text="${session.vo.hobby[0]}"/> 
+	<span th:text="${session.vo.hobby[1]}"/>  
+	<span th:text="${session.vo.hobby[2]}"/>  
+	<span th:text="${session.vo.hobby[3]}"/> <br />
+	<br />
+	<span th:text="${vo.name}"/>
+	(<span th:text="${vo.age}"/>세, <span th:text="*{vo.gender?'남':'여'}"/> )
+	<br />
+	<span th:text="${vo.hobby}"/>  <br />
+	<span th:text="${vo.hobby[0]}"/> 
+	<span th:text="${vo.hobby[1]}"/> <br />
+	<hr />
+	locale country : <span th:text="${#locale.country}"/> <br />
+	IP : <span th:text="${#request.remoteAddr}"/> <br />
+	Path : <span th:text="${#request.contextPath}"/> <br />
+	URI : <span th:text="${#request.requestURI}"/> <br />
+	URL : <span th:text="${#request.requestURL}"/> <br />
+</body>
+</html>

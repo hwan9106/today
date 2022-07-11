@@ -1,0 +1,11 @@
+<!-- 헤더 템플릿 적용 -->
+{{>./layout/header}}
+
+<ol>
+{{#list}}
+   <li>{{name}}({{age}}세, {{#gender}}남자{{/gender}}{{^gender}}여자{{/gender}}) </li> 
+{{/list}}
+</ol>
+
+<!-- 푸터 템플릿 적용 -->
+{{>./layout/footer}}

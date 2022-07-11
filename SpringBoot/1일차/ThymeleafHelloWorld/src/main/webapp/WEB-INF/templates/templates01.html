@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Good Thymes!!</title>
+</head>
+<body>
+	<h1>Hello Thymeleaf!!!(태그의 적용여부 th:text, th:utext )</h1>
+	<h2>properties파일을 이용한 국제화 기능</h2>
+	<hr />
+	<p th:text="#{welcome}"></p> <!-- &lt;b&gt;타임리프&lt;/b&gt; -->
+	<p th:utext="#{welcome}"></p> <!-- <b>타임리프</b> -->
+	<hr />
+	<p th:text="#{home.welcome}"></p>
+	<p th:utext="#{home.welcome}"></p>
+	<hr />
+	<p th:text="#{hello('한사람')}"></p>
+	<p th:text="#{hello('두사람')}"></p>
+	<hr />
+	<p th:text="#{hello2('한사람',34)}"></p>
+	<p th:text="#{hello2('두사람',28)}"></p>
+	<hr />
+</body>
+</html>

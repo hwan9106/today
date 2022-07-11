@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.ex07.dao.TestDAO">
+	<!-- namespace를 인터페이스 이름과 일치 시켜야 한다. -->
+	<select id="today" resultType="string">
+		select now()
+	</select>
+
+	<select id="sum" parameterType="hashmap" resultType="int">
+		select #{num1 } + #{num2 }
+	</select>
+
+	<select id="mul" parameterType="hashmap" resultType="int">
+		select #{num1 } * #{num2 }
+	</select>
+	
+	<select id="vo" parameterType="TestVO" resultType="TestVO">
+		select 
+		#{num1 } as num1, 
+		#{num2 } num2, 
+		now() as today,
+		#{num1 } + #{num2 } sum, 
+		#{num1 } * #{num2 } mul
+	</select>
+	
+</mapper>
