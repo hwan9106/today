@@ -1,0 +1,16 @@
+<!-- header template 적용 -->
+{{>./layouts/header.html}}
+
+<!-- content -->
+{{#buttonOne}}
+  {{> mybutton}} <!-- mybutton template 적용 -->
+{{/buttonOne}}
+{{#buttonTwo}}
+  {{> mybutton}}
+{{/buttonTwo}}
+{{#buttonThree}}
+  {{> mybutton}}
+{{/buttonThree}}
+
+<!-- footer template 적용 -->
+{{>./layouts/footer.html}}

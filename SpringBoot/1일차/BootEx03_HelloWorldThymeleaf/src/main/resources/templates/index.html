@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>타임리프를 이용한 템플릿</title>
+</head>
+<body>
+		<h2 th:text="${name}">여기에 이름</h2>
+	<hr />
+		<div th:text="${map.name}"></div>
+		<div th:text="${map.age}"></div>
+		<div th:text="${map.gender}"></div>
+	<hr />
+		<div th:text="${VO.name}"></div>
+		<div th:text="${VO.age}"></div>
+		<div th:text="${VO.gender}"></div>
+	<hr />
+
+	<ul>
+		<th:block th:each="data:${hobby}"> <!-- 변수명 : 콜렉션 -->
+			<li th:text="${data}"/>
+		</th:block>
+	</ul>
+</body>
+</html>
