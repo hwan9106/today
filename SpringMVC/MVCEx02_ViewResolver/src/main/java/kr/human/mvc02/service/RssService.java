@@ -10,7 +10,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-
 import org.springframework.stereotype.Service;
 
 import kr.human.mvc02.vo.Rss;
@@ -37,4 +36,3 @@ public class RssService {
 		return rssVO;
 	}
 }
-

@@ -14,17 +14,16 @@ import lombok.NoArgsConstructor;
 
 @XmlRootElement(name = "pizza")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder ={"name","flavor","toppings"})
+@XmlType(propOrder = {"name","flavor", "toppings"})
 @Data
 @NoArgsConstructor
 public class Pizza {
-    @XmlElement
+	@XmlElement
     private String name;
-    @XmlElement
+	@XmlElement
     private String flavor;
-    @XmlElement
+	@XmlElement
     private List<String> toppings = new ArrayList<String>();
-     
      
     public Pizza(String name){
         this.name = name;
@@ -32,6 +31,4 @@ public class Pizza {
         this.toppings.add("Cheese");
         this.toppings.add("bakon");
     }
-    
-     
 }

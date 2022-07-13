@@ -2,11 +2,11 @@ package kr.human.mvc02.vo;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class GenderAdpater extends XmlAdapter<String, Boolean>{
+public class GenderAdapter extends XmlAdapter<String, Boolean> {
 
 	@Override
-	public Boolean unmarshal(String v) throws Exception { 
-		return v.equals("남자"); // 남자일 경우 true, 여자일 경우 false
+	public Boolean unmarshal(String v) throws Exception {
+		return v.equals("남자");
 	}
 
 	@Override

@@ -32,4 +32,3 @@ public class Rss {
 		private String image;
 	}
 }
-
