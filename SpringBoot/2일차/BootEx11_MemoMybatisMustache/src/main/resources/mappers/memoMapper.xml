@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.memo.dao.MemoDAO">
+	<!-- namespace를 인터페이스 이름과 일치 시켜야 한다. -->
+	
+	<!-- 1. 전체 개수 구하기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from memo
+	</select>
+	<!-- 2. 글 1개 구하기 -->
+	<select id="selectByIdx" parameterType="int" resultType="MemoVO">
+		select * from memo where idx=#{idx}
+	</select>
+	<!-- 3. 글 1페이지 구하기 -->
+	<select id="selectList" parameterType="hashmap" resultType="MemoVO">
+		select * from memo order by idx desc limit #{startNo}, #{pageSize}
+	</select>
+	<!-- 4. 저장 하기 -->
+	<insert id="insert" parameterType="MemoVO">
+		insert into memo (name,password,content,regdate,ip) values (#{name},#{password},#{content},now(),#{ip})
+	</insert>
+	<!-- 5. 수정 하기 -->
+	<update id="update" parameterType="MemoVO">
+		update memo set content=#{content}, regdate=now(), ip=#{ip} where idx=#{idx}
+	</update>
+	<!-- 6. 삭제 하기 -->
+	<delete id="delete" parameterType="int">
+		delete from memo where idx=#{idx}
+	</delete>
+</mapper>
