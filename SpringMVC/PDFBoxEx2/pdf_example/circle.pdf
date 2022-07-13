@@ -1,0 +1,159 @@
+%PDF-1.4
+%цдья
+1 0 obj
+<<
+/Type /Catalog
+/Version /1.4
+/Pages 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R 4 0 R 5 0 R 3 0 R 4 0 R 5 0 R]
+/Count 6
+>>
+endobj
+3 0 obj
+<<
+/Type /Page
+/MediaBox [0.0 0.0 612.0 792.0]
+/Parent 2 0 R
+/Annots [6 0 R 7 0 R 8 0 R 9 0 R 10 0 R 11 0 R]
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/MediaBox [0.0 0.0 612.0 792.0]
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Type /Page
+/MediaBox [0.0 0.0 612.0 792.0]
+/Parent 2 0 R
+>>
+endobj
+6 0 obj
+<<
+/Type /Annot
+/Subtype /Highlight
+/QuadPoints [12.0 778.0 82.002 778.0 12.0 760.0 82.002 760.0]
+/C [0.0 0.0 1.0]
+/CA 0.2
+/Rect [12.0 762.0 82.002 780.0]
+/Contents (Highlighted since it's important)
+>>
+endobj
+7 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/BS 12 0 R
+/Rect [12.0 754.0 125.021996 774.0]
+/A 13 0 R
+>>
+endobj
+8 0 obj
+<<
+/Type /Annot
+/Subtype /Circle
+/Contents (Circle Annotation)
+/IC [1.0 0.0 0.0]
+/C [0.0 0.0 1.0]
+/BS 14 0 R
+/Rect [12.0 744.0 24.0 756.0]
+>>
+endobj
+9 0 obj
+<<
+/Type /Annot
+/Subtype /Square
+/Contents (Square Annotation)
+/C [1.0 0.0 0.0]
+/BS 15 0 R
+/Rect [588.0 738.0 600.0 750.0]
+>>
+endobj
+10 0 obj
+<<
+/Type /Annot
+/Subtype /Line
+/L [24.0 750.0 588.0 744.0]
+/LE [/None /OpenArrow]
+/Contents (Circle->Square)
+/Cap true
+/Rect [24.0 738.0 588.0 756.0]
+/BS 15 0 R
+/C [0.0 0.0 0.0]
+>>
+endobj
+11 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/BS 12 0 R
+/Rect [12.0 748.0 178.032 768.0]
+/A 16 0 R
+>>
+endobj
+12 0 obj
+<<
+/S /U
+/W 0.16666667
+>>
+endobj
+13 0 obj
+<<
+/Type /Action
+/S /URI
+/URI (http://pdfbox.apache.org)
+>>
+endobj
+14 0 obj
+<<
+/W 0.16666667
+>>
+endobj
+15 0 obj
+<<
+/W 1
+>>
+endobj
+16 0 obj
+<<
+/Type /Action
+/S /GoTo
+/D [5 0 R /FitH null]
+>>
+endobj
+xref
+0 17
+0000000000 65535 f
+0000000015 00000 n
+0000000078 00000 n
+0000000165 00000 n
+0000000292 00000 n
+0000000371 00000 n
+0000000450 00000 n
+0000000668 00000 n
+0000000774 00000 n
+0000000931 00000 n
+0000001072 00000 n
+0000001269 00000 n
+0000001373 00000 n
+0000001415 00000 n
+0000001491 00000 n
+0000001527 00000 n
+0000001554 00000 n
+trailer
+<<
+/Root 1 0 R
+/ID [<CF25A65C27D30B7804AD27E7030730FD> <CF25A65C27D30B7804AD27E7030730FD>]
+/Size 17
+>>
+startxref
+1621
+%%EOF

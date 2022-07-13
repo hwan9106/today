@@ -1,0 +1,20 @@
+https://kb.itextpdf.com/home
+
+https://kb.itextpdf.com/home/it7kb/installation-guidelines/installing-itext-7-community-for-java-developers
+
+https://kb.itextpdf.com/home/it7kb/ebooks/itext-7-jump-start-tutorial-for-java
+
+Chapter7은 아래 참조
+https://kb.itextpdf.com/home/it7kb/ebooks/itext-7-jump-start-tutorial-for-java/chapter-7-creating-pdf-ua-and-pdf-a-documents
+
+PDF/UA 및 PDF/A 문서 만들기
+
+ISO 14289는 PDF/UA로 더 잘 알려져 있습니다. 
+UA는 Universal Accessibility의 약자입니다. 
+PDF/UA 표준을 준수하는 PDF는 맹인 또는 시각 장애인을 포함하여 누구나 사용할 수 있습니다.
+
+ISO 19005는 PDF/A로 더 잘 알려져 있습니다. 
+A는 아카이빙을 나타냅니다. 
+이 표준의 목표는 디지털 문서를 장기간 보존하는 것입니다.
+
+
