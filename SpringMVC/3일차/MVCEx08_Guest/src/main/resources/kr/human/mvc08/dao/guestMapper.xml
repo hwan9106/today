@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.mvc08.dao.GuestDAO">
+	<!-- 1. 모두 얻기 -->
+	<select id="selectList" resultType="GuestVO">
+		select * from guest order by ref desc, seq
+	</select>
+	<!-- 2. 원본글 저장 -->
+	<insert id="insert" parameterType="GuestVO">
+		insert into guest
+		values 
+		(guest_idx_seq.nextval, guest_idx_seq.currval, 0, 0, #{name},#{password},#{content},sysdate,#{ip},'N')
+	</insert>
+	<!-- 3. 답변 저장 -->
+	<insert id="reply" parameterType="GuestVO">
+		insert into guest
+		values 
+		(guest_idx_seq.nextval, #{ref}, #{seq}, #{lev}, #{name},#{password},#{content},sysdate,#{ip},'N')
+	</insert>
+	<!-- 4. 나보다 seq가 큰값을 모두 1증가시킨다. -->
+	<update id="updateSeq" parameterType="hashmap">
+		<![CDATA[
+		update guest set seq = seq+1 where ref=#{ref} and seq > #{seq}
+		]]>
+	</update>
+	<!-- 5. 수정 -->
+	<update id="update" parameterType="GuestVO">
+		update 
+			guest
+		set
+			content = #{content},
+			regDate = sysdate,
+			ip = #{ip}
+		where
+			idx = #{idx}
+	</update>
+	<!-- 6. 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="GuestVO">
+		select * from guest where idx=#{idx}
+	</select>
+	<!-- 삭제를 위한 명령들 -->
+	<!-- 7. 항목 삭제 -->
+	<!-- 삭제 표시된 글 지우기 -->
+	<delete id="delete1" parameterType="int">
+		delete from guest where idx=#{idx} and del='Y'
+	</delete>
+	<delete id="delete2" parameterType="int">
+		delete from guest where idx=#{idx}
+	</delete>
+	<!-- 삭제 표시를 한다. -->
+	<update id="updateDel" parameterType="int">
+		update guest set del='Y' where idx=#{idx}
+	</update>
+	<!-- 나와 ref가 같으면 seq가 크거나 같은 것 가져오기 -->
+	<select id="selectSeqList" parameterType="hashmap" resultType="GuestVO">
+		<![CDATA[
+			select * from guest where ref=#{ref} and seq >=#{seq} order by seq 
+		]]>
+	</select>
+	<!-- 삭제 표시값이 'Y'인 모든 데이터 가져오기 -->
+	<select id="selectDelList" resultType="GuestVO">
+		select * from guest where del='Y' order by idx desc	
+	</select>
+</mapper>

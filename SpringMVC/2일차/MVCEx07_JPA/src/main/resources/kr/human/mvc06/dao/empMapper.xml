@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.mvc06.dao.EmpDAO">
+
+	<select id="selectCount" resultType="int">
+		select count(*) from emp
+	</select>
+	
+	<select id="selectByIdx" parameterType="int" resultType="EmpVO">
+		select * from emp where idx=#{idx}
+	</select>
+	
+	<select id="selectList" resultType="EmpVO">
+		select * from emp order by idx desc
+	</select>
+	
+	<insert id="insert" parameterType="EmpVO">
+		insert into emp values (emp_idx_seq.nextval, #{name}, #{role})
+	</insert>
+	
+	<update id="update" parameterType="EmpVO">
+		update emp set name = #{name}, role=#{role} where idx=#{idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from emp where idx=#{idx}
+	</delete>
+</mapper>

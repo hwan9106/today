@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 메세지 컨버터 등록 -->
+	<!-- 
+	<bean id="xmlMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter"/>
+	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>
+	 -->
+	
+	<!-- 등록된 메세지 컨버터 맵핑 -->
+	<!-- 
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="xmlMessageConverter"/>
+				<ref bean="jsonMessageConverter"/>
+			</list>
+		</property>
+	</bean>	
+	 -->
+</beans>
