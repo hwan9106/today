@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- DB 연결 정보를 등록한다. -->
+	<!-- 1. 프로퍼티 파일을 사용 하겠다. -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<!-- 2. DataSource빈을 등록한다. -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${o.driver}"></property>
+		<property name="url" value="${o.url}"></property>
+		<property name="username" value="${o.username}"></property>
+		<property name="password" value="${o.password}"></property>
+	</bean>	
+	<!-- 3. JdbcTemplate 빈을 등록한다. 생성자로 주입해도 되고 Setter로 주입해도 됩니다. -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 4. Mybatis 빈 등록 -->	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="typeAliasesPackage" value="kr.human.security03.vo"></property>
+		<property name="mapperLocations" value="classpath:/kr/human/security03/dao/*.xml"></property>
+	</bean>
+	<!-- 5. 다음의 빈을 등록해야 DAOImpl을 만들지 않아도 된다. -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.human.security03.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- Security 권한 설정 -->
+    <security:http auto-config="true" >
+        <security:intercept-url pattern="/" access="permitAll" />
+        <security:intercept-url pattern="/home" access="permitAll" />
+        <security:intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <security:intercept-url pattern="/dba**" access="hasRole('DBA') or hasRole('ADMIN')" />
+        <!-- 접근 불가능한 페이지에 접근시  보여줄 페이지 지정 -->
+        <security:access-denied-handler error-page="/403"/>
+        <security:form-login  
+        	login-page="/login"
+        	username-parameter="userid"
+        	password-parameter="password"
+        	default-target-url="/" 
+        	authentication-failure-url="/login?error"/> <!-- 로그인 성공/실패시 이동할 주소 -->
+        <security:logout logout-success-url="/login?logout"/> <!-- 로그아웃 성공시 이동할 페이지 -->
+       	<!-- csrf 프로텍션을 사용하겠다	 -->
+        <security:csrf disabled="false"/>
+    </security:http>
+    <!-- 
+    <security:authentication-manager >
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="bill"  password="abc123"  authorities="ROLE_USER" />
+                <security:user name="admin" password="root123" authorities="ROLE_ADMIN" />
+                <security:user name="dba"   password="root123" authorities="ROLE_ADMIN,ROLE_DBA" />
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+     -->
+	<!-- DB정보를 이용하여 인증을 처리 하겠다. -->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service 
+				data-source-ref="dataSource"
+				users-by-username-query="select userid as username, password , enabled from users where userid=?"
+				authorities-by-username-query="select userid as username, role from user_role where userid=?"
+			/>	
+		</security:authentication-provider>
+	</security:authentication-manager>    
+	
+	<!-- 서큐리티 암호화 객체 등록 -->
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"></bean>
+</beans>
