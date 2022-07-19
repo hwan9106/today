@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.mvc13.dao.UpFileDAO">
+	<!-- 1. 첨부파일 저장하기 -->
+	<insert id="insert" parameterType="UpFileVO">
+		insert into upfile 
+			(idx,ref, saveFileName, originalFileName)
+		values
+			(upFile_idx_seq.nextval,#{ref}, #{saveFileName}, #{originalFileName})
+	</insert>
+	<!-- 2. 첨부파일 삭제하기 -->
+	<delete id="deleteByIdx" parameterType="int">
+		delete from upfile where idx=#{idx}
+	</delete>
+	<!-- 3. 원본글의 모든 첨부파일 삭제하기 -->
+	<delete id="deleteByRef" parameterType="int">
+		delete from upfile where ref=#{ref}
+	</delete>
+	<!-- 4. 원본글의 모든 첨부파일 읽기 -->
+	<select id="selectByRef" parameterType="int" resultType="UpFileVO">
+		select * from upFile where ref=#{ref}
+	</select>
+	<!-- 5. 글 1개 가져오기 -->
+	<select id="selectByIdx" parameterType="int" resultType="UpFileVO">
+		select * from upFile where idx=#{idx}
+	</select>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.human.mvc09.dao.TestDAO">
+	<select id="selectToday" resultType="string">
+		select sysdate from dual
+	</select>
+	
+	<select id="selectEmp" resultType="hashmap">
+	SELECT 
+		FIRST_NAME || ' ' || LAST_NAME  name , d.DEPARTMENT_NAME  deptname, l.CITY city 
+	FROM 
+		EMPLOYEES e , DEPARTMENTS d, LOCATIONS l  
+	WHERE 
+		e.DEPARTMENT_ID  = d.DEPARTMENT_ID 
+		AND 
+		d.LOCATION_ID  = l.LOCATION_ID
+	</select>
+</mapper>
