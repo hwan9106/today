@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.member.dao.MemberDAO">
+
+	<!-- 1. 저장하기 -->
+	<insert id="insert" parameterType="MemberVO">
+		insert into member values
+		(
+			member_idx_seq.nextval,
+			#{userid},
+			#{password},
+			#{username},
+			#{nickname},
+			#{email},
+			#{gender},
+			#{hp},
+			#{zipcode},
+			#{address1},
+			#{address2},
+			'0',
+			SYSDATE,
+			SYSDATE,
+			#{col1},
+			'',
+			''
+		)
+	</insert>
+	<!-- 2. 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="MemberVO">
+		select * from member where idx=#{idx}
+	</select>
+	<!-- 3. 수정하기 -->
+	<update id="update" parameterType="MemberVO">
+		update member set
+			username = #{username},
+			nickname = #{nickname},
+			hp = #{hp},
+			zipcode = #{zipcode},
+			address1 = #{address1},
+			address2 = #{address2},
+			modiDate = SYSDATE
+		where
+			idx=#{idx}
+	</update>
+	<!-- 4. 삭제하기 -->
+	<delete id="delete" parameterType="int">
+		delete from member where idx=#{idx}
+	</delete>
+	<!-- 5. 모두보기(관리자만 사용) -->
+	<select id="selectList" resultType="MemberVO">
+		select * from member order by idx desc
+	</select>
+	<!-- 6. 개수세기 -->
+	<select id="selectCount" resultType="int">
+		select count(*) from member
+	</select>
+	<!-- 7. 해당아이디의 개수세기(아이디 중복확인 : 0이면 없는아이디, 1이상이면 존재하는 아이디) -->
+	<select id="selectCountByUserId" resultType="int" parameterType="string">
+		select count(*) from member where userid=#{userid}
+	</select>
+	<!-- 8. 이름과 전화번호로 가져오기(아이디찾기 사용) -->
+	<select id="selectByUsername" parameterType="hashmap" resultType="MemberVO">
+		select * from member where username=#{username} and hp=#{hp}
+	</select>
+	<!-- 9. ID와과 전화번호로 가져오기(비번찾기 사용) -->
+	<select id="selectByUserId" parameterType="hashmap" resultType="MemberVO">
+		select * from member where userid=#{userid} and hp=#{hp}
+	</select>
+	
+	<!-- 10. 인증여부를 변경하는 쿼리 -->
+	<update id="updateUse" parameterType="hashmap">
+		update member set use=#{use} where userid=#{userid} and col1=#{col1}
+	</update>
+	<!-- 11. 비밀번호 변경하기 -->
+	<update id="updatePassword" parameterType="hashmap">
+		update member set password=#{password} where userid=#{userid}
+	</update>
+	
+	<!-- 12. ID로 가져오기 -->
+	<select id="selectUserId" parameterType="string" resultType="MemberVO">
+		select * from member where userid=#{userid}
+	</select>
+</mapper>

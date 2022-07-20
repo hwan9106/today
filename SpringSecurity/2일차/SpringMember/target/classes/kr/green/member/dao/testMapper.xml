@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.member.dao.TestDAO">
+
+	<select id="selectToday" resultType="java.util.Date">
+		select SYSDATE from dual
+	</select>
+
+	<select id="selectSum" parameterType="hashmap" resultType="int">
+		select #{num1 } + #{num2 } from dual
+	</select>
+
+	<select id="selectMul" parameterType="hashmap" resultType="int">
+		select #{num1 } * #{num2 } from dual
+	</select>
+	
+	<select id="selectVO" parameterType="TestVO" resultType="TestVO">
+		select 
+		#{num1 } as num1, 
+		#{num2 } num2, 
+		SYSDATE as today,
+		#{num1 } + #{num2 } sum, 
+		#{num1 } * #{num2 } mul from dual
+	</select>
+	
+</mapper>

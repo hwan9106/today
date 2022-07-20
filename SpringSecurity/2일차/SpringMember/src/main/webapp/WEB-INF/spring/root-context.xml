@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- 프로퍼티 파일을 사용하겠다. -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- DB 연동 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${o.driver}"></property>
+		<property name="url" value="${o.url}"></property>
+		<property name="username" value="${o.username}"></property>
+		<property name="password" value="${o.password}"></property>
+	</bean>
+	
+	<!-- 트랜젝션 관리자 등록 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- Mybatis연결 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="kr.green.member.vo"/>
+		<property name="mapperLocations" value="classpath:/kr/green/member/dao/*.xml"/>
+	</bean>
+	
+	<!-- 다음을 추가하면 SqlSession세션을 만들 피요가 없고 DAOImpl도 만들 필요가 없다 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.green.member.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>		
+	
+
+	<!-- Security 권한 설정 -->
+	<security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/" access="permitAll" />
+        <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+        <security:intercept-url pattern="/board/**" access="hasRole('USER')" />
+        <!-- 접근 불가능한 곳에 접근할때 에러가 아닌 보여줄 페이지 지정 -->
+        <security:access-denied-handler error-page="/403"/>
+        <!-- 사용자가 만든 로그인 폼을 사용하기 위해서는 이부분을 수정해 준다. -->
+        <security:form-login  
+        login-page="/login"
+        username-parameter="userid"
+        password-parameter="password"
+        default-target-url="/"
+        authentication-success-handler-ref="customSuccessHandler"
+        authentication-failure-url="/login?error" /> <!-- 로그인 실패시 이동할 페이지 -->
+        <security:logout logout-success-url="/"/> <!-- 로그아웃 성공시 이동할 페이지 -->
+        <!-- 
+        <security:logout logout-success-url="/login?logout"/> 
+         -->
+        <!-- csrf 프로텍션 사용하겠다. -->
+        <security:csrf/>
+    </security:http>
+  
+	<!-- Security 사용자 설정 -->
+    <security:authentication-manager >
+    	<!-- DB정보를 이용하여 인증을 처리 하겠다. -->
+    	<security:authentication-provider>
+    		 <security:password-encoder ref="bCryptPasswordEncoder"/>
+			 <security:jdbc-user-service 
+			 	data-source-ref="dataSource"
+			 	users-by-username-query="select userid as username, password, use enabled from member where userid=?"
+			 	authorities-by-username-query="select username, role from member_role where username=?"
+			 	/>   	
+    	</security:authentication-provider> 
+    </security:authentication-manager>	
+    
+    <!-- 로그인 성공시 처리할 객체 등록 -->
+    <bean class="kr.green.member.service.CustomSuccessHandler" id="customSuccessHandler"></bean>
+    
+    <!-- 시큐리트 암호화 객체 등록 -->
+    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
+
+	<!-- 자바 메일 보내기 객체 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com"></property>
+		<property name="port" value="587"></property>
+		<property name="username" value="hwan9532@naver.com"></property>
+		<property name="password" value="xoghks12"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+		</property>
+	</bean>			
+</beans>

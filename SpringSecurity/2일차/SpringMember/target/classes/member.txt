@@ -1,0 +1,80 @@
+회원관리 만들기
+---------------
+1. 어디에 저장하지? --- Oracle
+2. 무엇을 저장하지?
+   키필드    		idx  		number
+   사용자아이디 	userid		varchar2
+   사용자비밀번호 	password	varchar2
+   사용자이름		username	varchar2
+   사용자별명       nickname	varchar2
+   사용자이메일     email		varchar2
+   성별				gender		char	  -- 1(남자), 0(여자)
+   전화번호			hp			varchar2
+   우편번호			zipcode		varchar2
+   주소 1			address1	varchar2
+   주소 2			address2	varchar2
+   인증여부			use			char	  -- 0(미인증), 1(인증)
+   등록일           regDate     timestamp
+   수정일           modiDate    timestamp
+   여분필드1		col1		varchar2	
+   여분필드2		col2		varchar2	
+   여분필드3		col3		varchar2
+   
+3. 테이블을 만들자.
+create sequence member_idx_seq;
+DROP TABLE MEMBER;
+create table member(
+	idx 		number primary key,
+	userid		varchar2(100) not null,
+	password	varchar2(100) not null,
+	username	varchar2(100) not null,
+	nickname	varchar2(100) not null,
+	email		varchar2(100) not null,
+	gender		varchar2(1) CONSTRAINT gender_ck CHECK (gender IN ('M','F')),
+	hp			varchar2(100) not null,
+	zipcode		varchar2(10)  not null,
+	address1	varchar2(200) not null,
+	address2	varchar2(300) not null,
+	use			varchar2(1)  DEFAULT '0' CONSTRAINT use_ck CHECK (use IN ('1','0')),
+	regDate     timeStamp DEFAULT sysdate ,
+	modiDate    timeStamp DEFAULT sysdate ,
+	col1		varchar2(200),
+	col2		varchar2(200),
+	col3		varchar2(200)
+); 
+
+SELECT * FROM MEMBER;
+
+4. VO 만들기	
+
+5. 기능을 생각해보자
+	1) 회원가입  --- 아이디 중복 확인 -- AJAX
+	2) 가입완료  --- 이메일 인증
+	
+	3) 아이디찾기
+	4) 비번찾기
+	
+	5) 비밀번호 변경하기
+	6) 회원정보수정
+	7) 회원탈퇴
+	
+	8) 로그인
+	9) 로그아웃 
+	
+6. DAO를 만들자
+   Mapper도 만들자
+   
+7. 서비스를 만들자.
+   
+   
+
+
+
+
+
+
+
+
+
+
+
