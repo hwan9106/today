@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Django Bookmark Detail</title>
+</head>
+<body>
+<div id="content">
+    <h1>사이트 이름 : {{ bookmark.title }}</h1>
+    <ul>
+        <li>사이트 방문하기 : <a href="{{ bookmark.url }}">{{ bookmark.url }}</a></li>
+        <li><a href="/list">목록으로</a></li>
+        <li><a href="/">홈으로</a></li>
+    </ul>
+</div>
+</body>
+</html>
+

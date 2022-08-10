@@ -1,0 +1,323 @@
+제3장 Blog 앱 만들기
+==================
+1. blogProject를 만든다.
+
+2. 터미널에서
+django-admin --version
+django-admin startproject blog .
+python .\manage.py startapp posts
+
+3. blog/settings.py를 변경
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'posts.apps.PostsConfig',  ###### 추가
+]
+
+4. 터미널에서
+    python .\manage.py migrate
+    python manage.py runserver
+
+5. blog/settings.py를 변경
+	# LANGUAGE_CODE = 'en-us'
+	LANGUAGE_CODE = 'ko-kr'
+
+	# TIME_ZONE = 'UTC'
+	TIME_ZONE = 'Asia/Seoul'
+
+	새로고침 하면 한글로 나온다.
+
+6. posts/model.py에 다음의 내용을 추가한다.
+   ---------------------------------------------------------
+	from django.db import models
+	from django.urls import reverse
+
+
+	class Post(models.Model):
+	    title = models.CharField(verbose_name='TITLE', max_length=50)
+	    slug = models.SlugField('SLUG', unique=True, allow_unicode=True, help_text='one word for title alias.')
+	    description = models.CharField('DESCRIPTION', max_length=100, blank=True, help_text='simple description text.')
+	    content = models.TextField('CONTENT')
+	    create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
+	    modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
+
+	    class Meta:
+		verbose_name = 'post'
+		verbose_name_plural = 'posts'
+		db_table = 'blog_posts'
+		ordering = ('-modify_dt',)
+
+	    def __str__(self):
+		return self.title
+
+	    def get_absolute_url(self):
+		return reverse('blog:post_detail', args=(self.slug,))
+
+	    def get_previous(self):
+		return self.get_previous_by_modify_dt()
+
+	    def get_next(self):
+		return self.get_next_by_modify_dt()   
+   ---------------------------------------------------------
+
+   7. posts/admin.py를 편집한다.
+   ---------------------------------------------------------
+	from django.contrib import admin
+	from .models import Post
+
+
+	@admin.register(Post)
+	class PostAdmin(admin.ModelAdmin):
+	    list_display  = ('id', 'title', 'modify_dt')
+	    list_filter   = ('modify_dt',)
+	    search_fields = ('title', 'content')
+	    prepopulated_fields = {'slug': ('title',)}
+   ---------------------------------------------------------
+
+8. 터미널에서
+   서버를 중지하고
+   모델을 적용시킨다. DB에 테이블이 자동으로 생성된다.
+   python manage.py makemigrations posts
+   python manage.py migrate
+
+9. 관리자를 만들어 admin에 로그인을 해보자
+   터미널에서
+   python manage.py createsuperuser
+
+
+10. 서버를 다시 시작하여 admin에 접속해서 DB생성을 확인한다.
+    터미널에서
+    python manage.py runserver
+    웹브라우져에 접속한다. 위에서 생성한 아이디와 비번으로 로그인을 수행한다.
+    http://127.0.0.1:8000/admin
+
+11. posts/views.py를 편집한다.
+   ---------------------------------------------------------
+	from django.shortcuts import render
+
+	from django.views.generic import ListView, DetailView
+	from django.views.generic import ArchiveIndexView, YearArchiveView, MonthArchiveView
+	from django.views.generic import DayArchiveView, TodayArchiveView
+
+	from .models import Post
+
+
+	#--- ListView
+	class PostLV(ListView):
+	    model = Post
+	    template_name = 'blog/post_all.html'
+	    context_object_name = 'posts'
+	    paginate_by = 2
+
+
+	#--- DetailView
+	class PostDV(DetailView):
+	    model = Post
+	    template_name = 'blog/post_detail.html'
+
+	#--- ArchiveView
+	class PostAV(ArchiveIndexView):
+	    model = Post
+	    template_name = 'blog/post_archive.html'
+	    date_field = 'modify_dt'
+
+
+	class PostYAV(YearArchiveView):
+	    model = Post
+	    date_field = 'modify_dt'
+	    template_name = 'blog/post_archive_year.html'
+	    make_object_list = True
+
+
+	class PostMAV(MonthArchiveView):
+	    model = Post
+	    template_name = 'blog/post_archive_month.html'
+	    date_field = 'modify_dt'
+
+
+	class PostDAV(DayArchiveView):
+	    model = Post
+	    template_name = 'blog/post_archive_day.html'
+	    date_field = 'modify_dt'
+
+
+	class PostTAV(TodayArchiveView):
+	    model = Post
+	    template_name = 'blog/post_archive_day.html'
+	    date_field = 'modify_dt'
+
+   ---------------------------------------------------------
+12. posts/template/blog폴더를 생성한다.
+    보여질 *.html 파일들을 만든다.   우리는 통째로 폴더를 복사했다.
+
+13. blog/settings.py에 템플릿 폴더 지정
+	TEMPLATES = [
+	    {
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [BASE_DIR / "templates"],  ### 수정
+
+14. posts/urls.py를 작성한다
+   ---------------------------------------------------------
+	from django.urls import path, re_path
+	from posts import views
+
+
+	app_name = 'blog'
+	urlpatterns = [
+
+	    # Example: /blog/
+	    path('', views.PostLV.as_view(), name='index'),
+
+	    # Example: /blog/post/ (same as /blog/)
+	    path('post/', views.PostLV.as_view(), name='post_list'),
+
+	    # Example: /blog/post/django-example/
+	    re_path(r'^post/(?P<slug>[-\w]+)/$', views.PostDV.as_view(), name='post_detail'),
+
+	    # Example: /blog/archive/
+	    path('archive/', views.PostAV.as_view(), name='post_archive'),
+
+	    # Example: /blog/archive/2019/
+	    path('archive/<int:year>/', views.PostYAV.as_view(), name='post_year_archive'),
+
+	    # Example: /blog/archive/2019/nov/
+	    path('archive/<int:year>/<str:month>/', views.PostMAV.as_view(), name='post_month_archive'),
+
+	    # Example: /blog/archive/2019/nov/10/
+	    path('archive/<int:year>/<str:month>/<int:day>/', views.PostDAV.as_view(), name='post_day_archive'),
+
+	    # Example: /blog/archive/today/
+	    path('archive/today/', views.PostTAV.as_view(), name='post_today_archive'),
+
+	]
+   ---------------------------------------------------------
+
+15. blog/urls.py에 좀전에 만든 urls.py를 등록한다.
+   ---------------------------------------------------------
+	from django.contrib import admin
+	from django.urls import path, include
+
+	urlpatterns = [
+	    path('admin/', admin.site.urls),
+	    path('blog/', include('posts.urls')), ## 추가
+	]
+   ---------------------------------------------------------
+16. 서버를 시작해서 방문해보자!!!
+    터미널에서 
+    python manage.py runserver
+
+
+17. 메인페이지를 만들어보자!!!!
+    터미널에서
+    python .\manage.py startapp main 
+
+18. main/model.py를 수정한다.
+   ---------------------------------------------------------
+	from django.db import models
+
+	# Create your models here.
+
+
+	class Main(models.Model):
+	    pass
+   ---------------------------------------------------------
+
+19. main/views.py 수정
+   ---------------------------------------------------------
+	from django.shortcuts import render
+
+	# Create your views here.
+	from django.views.generic import ListView
+	from .models import Main
+
+
+	class HomePageView(ListView):
+	    model = Main
+	    template_name = "index.html" 
+    ---------------------------------------------------------
+20. main/templates 폴더를 만들고 index.html을 만든다.
+    ---------------------------------------------------------
+	<!DOCTYPE html>
+	<html lang="ko">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>나의 홈페이지</title>
+	</head>
+	<body>
+	    <a href="blog/post/">블로그 보러가기</a>
+	</body>
+	</html>
+    ---------------------------------------------------------
+21.  main/urls.py을 만든다.
+    ---------------------------------------------------------
+	from django.urls import path
+	from .views import HomePageView
+
+	urlpatterns = [
+	    path("", HomePageView.as_view(), name="home"),
+	]    
+    ---------------------------------------------------------
+22. blog/urls.py에 위에서 만든 주소를 등록한다.
+    ---------------------------------------------------------
+	from django.contrib import admin
+	from django.urls import path, include
+
+	urlpatterns = [
+	    path('admin/', admin.site.urls),
+	    path('blog/', include('posts.urls')),
+	    path('', include('main.urls')),   ## 추가
+	]
+    ---------------------------------------------------------
+23. blog/setting.py를 수정한다.
+    ---------------------------------------------------------
+	INSTALLED_APPS = [
+	    'django.contrib.admin',
+	    'django.contrib.auth',
+	    'django.contrib.contenttypes',
+	    'django.contrib.sessions',
+	    'django.contrib.messages',
+	    'django.contrib.staticfiles',
+	    'posts.apps.PostsConfig',
+	    'main.apps.MainConfig',  ### 추가
+	]
+    ---------------------------------------------------------
+
+24. 서버를 다시 시작해서
+    http://127.0.0.1:8000/ 접속하면 메인페이지가 나온다.
+
+
+25. posts/templates/blog/post_detail.html을 조금 수정해보자
+    ---------------------------------------------------------
+	<h2>{{ object.title }}</h2>
+
+	<p>
+	    {% if object.get_previous %}
+	    <a href="{{ object.get_previous.get_absolute_url }}" title="View previous post">
+		&laquo;-- {{ object.get_previous }}
+	    </a>
+	    {% endif %}
+
+	    {% if object.get_next %}
+	    | <a href="{{ object.get_next.get_absolute_url }}" title="View next post">
+	    {{ object.get_next }} --&raquo;
+	    </a>
+	    {% endif %}
+	</p>
+
+	<p>{{ object.modify_dt|date:"j F Y" }}</p>
+	<br>
+
+	<div>
+	    {{ object.content|linebreaks }}
+	</div>
+	<!-- 이부분 추가 -->
+	<div>
+	    <a href="/blog/post/">목록으로</a> |
+	    <a href="/">홈으로</a> |
+	</div>
+
+    ---------------------------------------------------------

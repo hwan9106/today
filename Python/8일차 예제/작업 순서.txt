@@ -1,0 +1,73 @@
+HelloWorld 페이지 만들기
+---------------------
+1. 파이선 프로젝트를 만든다.
+2. 프로젝트에 django모듈을 설치한다.(우리는 로컬에 설치해서 안해도 된다.)
+3. 장고 설치 확인
+   터미널에서
+   django-admin --version [엔터]
+   버전이 표시되면 설치가 완료된것이다.
+4. 프로젝트를 만들고 페이지를 추가해 보자
+   터미널에서 helloworld 프로젝트 생성
+   django-admin startproject helloworld . [엔터]
+   시작 페이지를 만든다.
+   python3 manage.py startapp pages[엔터]
+
+5. helloworld/settings.py에 다음을 추가한다.
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "pages.apps.PagesConfig",  # 이 부분을 추가한다.
+]
+
+6. 프로젝트를 실행해 보자
+   터미널에서
+   python manage.py migrate[엔터]
+   python manage.py runserver[엔터]
+   콘솔에 표시된 http://127.0.0.1:8000/를 클릭하여 페이지 확인
+   장고의 기본 화면이 나온다.
+   Ctrl + C 또는 Ctrl + Break를 눌러 서버를 중지한다.
+ 
+7. 사용자의 시작 페이지를 만들어 보자.
+   pages밑에 templates폴더를 만든다.
+   templates폴더 밑에 home.html을 만든다.
+   helloworld/settings.py에 다음을 추가한다.
+   -------------------------------------
+   	"DIRS": [],을 찾아 다음과 같이 변경
+	"DIRS": [BASE_DIR/"templates"],
+   -------------------------------------
+   pages/views.py에 다음을 추가한다.
+   -------------------------------------
+	from django.views.generic import TemplateView
+	class HomePageView(TemplateView):
+	    template_name = "home.html"
+   -------------------------------------
+   pages/urls.py파일을 새롭게 만들어 다음을 입력한다
+   -------------------------------------
+	# pages/urls.py
+	from django.urls import path
+	from .views import HomePageView
+
+	urlpatterns = [
+	    path("", HomePageView.as_view(), name="home"),
+	]
+   -------------------------------------
+   helloword/urls.py에 좀전에 만든 url을 추가해야 한다.
+   -------------------------------------
+	# helloworld/urls.py
+	from django.contrib import admin
+	from django.urls import path, include  # 이 부분
+
+	urlpatterns = [
+	    path("admin/", admin.site.urls),
+	    path("", include("pages.urls")),  # 이 부분 추가
+	]
+   -------------------------------------
+
+8. 프로젝트를 실행해서 내가만든 html페이지를 확인하자
+   터미널에서
+   python manage.py runserver[엔터]
+   콘솔에 표시된 http://127.0.0.1:8000/를 클릭하여 페이지 확인

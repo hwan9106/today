@@ -1,0 +1,172 @@
+1. bookmarkProject를 만든다.
+2. 터미널에서
+django-admin --version
+django-admin startproject bookmark .
+python .\manage.py startapp posts
+
+3. settings.py를 변경
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'posts.apps.PostsConfig',  ###### 추가
+]
+
+4. 터미널에서
+    python .\manage.py migrate
+    python manage.py runserver
+
+5.  settings.py를 변경
+	# LANGUAGE_CODE = 'en-us'
+	LANGUAGE_CODE = 'ko-kr'
+
+	# TIME_ZONE = 'UTC'
+	TIME_ZONE = 'Asia/Seoul'
+
+	새로고침 하면 한글로 나온다.
+	서버를 중지하고
+6. model.py를 수정한다.
+   다음의 내용을 추가한다.   
+	# Create your models here.
+	class Bookmark(models.Model):
+	    title = models.CharField('TITLE', max_length=100, blank=True)
+	    url = models.URLField('URL', unique=True)
+
+	    def __str__(self):
+		return self.title
+
+
+7. 모델을 적용시킨다. DB에 테이블이 자동으로 생성된다.
+   터미널에서
+   python manage.py makemigrations posts
+   python manage.py migrate
+
+8. 관리자를 만들어 admin에 로그인을 해보자
+   터미널에서
+   python manage.py createsuperuser
+
+
+9. 서버를 다시 시작하여 admin에 접속해서 DB생성을 확인한다.
+   터미널에서
+   python manage.py runserver
+   웹브라우져에 접속한다. 위에서 생성한 아이디와 비번으로 로그인을 수행한다.
+   http://127.0.0.1:8000/admin
+
+
+10. posts/admin.py에 다음을 추가한다.
+    
+	from .models import Bookmark
+	admin.site.register(Bookmark)
+
+   웹브라우져에서 새로고침을 해보aus 테이블이 생성된것이 보인다.
+   네이버/다음/구글을 추가해보자
+
+11. posts/view.py를 수정하자
+	from django.shortcuts import render
+
+	# Create your views here.
+	from django.views.generic import ListView, DetailView
+	from .models import Bookmark
+
+
+	class HomePageView(ListView):
+	    model = Bookmark
+	    template_name = "home.html"
+
+
+	class BookmarkLV(ListView):
+	    model = Bookmark
+	    template_name = "bookmark_list.html"
+
+
+	class BookmarkDV(DetailView):
+	    model = Bookmark
+	    template_name = "bookmark_detail.html"
+
+
+
+12. settings.py에 템플릿 폴더 지정
+	TEMPLATES = [
+	    {
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [BASE_DIR / "templates"],  ### 수정
+
+13. posts/templates폴더를 생성한다.
+    폴더안에 3개의 HTML파일을 추가한다.
+    home.html
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Title</title>
+	</head>
+	<body>
+	<h1>북마크 리스트</h1>
+	<ul>
+	    <a href="list">북마크 목록보기</a>
+	</ul>
+	</body>
+	</html>
+   bookmark_list.html
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<title>Django Bookmark List</title>
+	</head>
+	<body>
+	<div id="content">
+	    <h1>Bookmark List</h1>
+	      {% for bookmark in bookmark_list %}
+		<li><a href="{% url 'detail' bookmark.id %}">{{ bookmark }}</a></li>
+	      {% endfor %}
+      </div>
+	</body>
+	</html>
+   bookmark_detail.html
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<title>Django Bookmark Detail</title>
+	</head>
+	<body>
+	<div id="content">
+	    <h1>사이트 이름 : {{ bookmark.title }}</h1>
+	    <ul>
+		<li>사이트 방문하기 : <a href="{{ bookmark.url }}">{{ bookmark.url }}</a></li>
+		<li><a href="/list">목록으로</a></li>
+		<li><a href="/">홈으로</a></li>
+	    </ul>
+	</div>
+	</body>
+	</html>
+
+
+
+
+14. posts/urls.py 작성
+	from django.urls import path
+	from .views import BookmarkLV, BookmarkDV
+
+	urlpatterns = [
+	    path("", HomePageView.as_view(), name="home"),
+	    path("list/", BookmarkLV.as_view(), name="list"),
+	    path("detail/<int:pk>/", BookmarkDV.as_view(), name="detail"),
+	]
+
+15. bookmark/urls.py에 좀전에 만든 url을 인식하도록 한다.
+	from django.contrib import admin
+	from django.urls import path, include
+
+	urlpatterns = [
+	    path('admin/', admin.site.urls),
+	    path('', include("posts.urls")),   ##  이 부분 추가.
+	]
+
+
+16. 서버를 시작해서 방문해보자!!!
+    터미널에서 
+    python manage.py runserver
+
